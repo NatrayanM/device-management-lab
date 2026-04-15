@@ -17,6 +17,6 @@ public class DeviceHooks {
     public void deviceCleanup(){
         if(deviceService.cleanupDevice())
             System.out.println("device cleaned up successfully");
-        else System.out.println("device cleanup failed");
+        else System.out.println("device cleanup failed or skipped");
     }
 }

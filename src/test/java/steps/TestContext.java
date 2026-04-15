@@ -5,31 +5,40 @@ import model.Device;
 
 public class TestContext {
 
-    private Device deviceRequest;
-    private Response deviceResponse;
-    private String deviceId;
+    private Device createdDeviceRequest;
+    private Device updatedDeviceRequest;
+    private Response lastDeviceResponse;
+    private String createdDeviceId;
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getCreatedDeviceId() {
+        return createdDeviceId;
     }
 
-    public Device getDeviceRequest() {
-        return deviceRequest;
+    public Device getCreatedDeviceRequest() {
+        return createdDeviceRequest;
     }
 
-    public Response getDeviceResponse() {
-        return deviceResponse;
+    public Device getUpdatedDeviceRequest() {
+        return updatedDeviceRequest;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public Response getLastDeviceResponse() {
+        return lastDeviceResponse;
     }
 
-    public void setDeviceRequest(Device deviceRequest) {
-        this.deviceRequest = deviceRequest;
+    public void setCreatedDeviceId(String createdDeviceId) {
+        this.createdDeviceId = createdDeviceId;
     }
 
-    public void setDeviceResponse(Response deviceResponse) {
-        this.deviceResponse = deviceResponse;
+    public void setCreatedDeviceRequest(Device createdDeviceRequest) {
+        this.createdDeviceRequest = createdDeviceRequest;
+    }
+
+    public void setUpdatedDeviceRequest(Device updatedDeviceRequest) {
+        this.updatedDeviceRequest = updatedDeviceRequest;
+    }
+
+    public void setLastDeviceResponse(Response lastDeviceResponse) {
+        this.lastDeviceResponse = lastDeviceResponse;
     }
 }

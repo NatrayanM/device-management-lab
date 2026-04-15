@@ -4,10 +4,12 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import model.Device;
 import steps.TestContext;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
-import java.math.BigDecimal;
+import java.time.Duration;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class DeviceAssertions {
@@ -19,18 +21,79 @@ public class DeviceAssertions {
     }
 
     public void validateStatusCode(){
-        Response actualResponse = testContext.getDeviceResponse();
+        Response actualResponse = testContext.getLastDeviceResponse();
         assertEquals(200, actualResponse.getStatusCode());
     }
 
     public void validateDeviceCreation(){
-        Device expectedRequest = testContext.getDeviceRequest();
-        JsonPath jsonRsp = testContext.getDeviceResponse().jsonPath();
+        Device expectedRequest = testContext.getCreatedDeviceRequest();
+        JsonPath jsonRsp = testContext.getLastDeviceResponse().jsonPath();
+
+        validateDeviceData(expectedRequest, jsonRsp);
+
+        assertNotNull(jsonRsp.get("createdAt"));
+        checkTimeStamp(((Number) jsonRsp.get("createdAt")).longValue());
+
+    }
+
+    public void validateDeviceUpdate(){
+        Device expectedRequest = testContext.getUpdatedDeviceRequest();
+        JsonPath jsonRsp = testContext.getLastDeviceResponse().jsonPath();
 
 
-        assertEquals(expectedRequest.getName(), jsonRsp.get("name"));
+        validateDeviceData(expectedRequest, jsonRsp);
+
+        assertEquals(testContext.getCreatedDeviceId(), jsonRsp.getString("id"));
+        assertNotNull(jsonRsp.get("updatedAt"));
+        checkTimeStamp(((Number) jsonRsp.get("updatedAt")).longValue());
+    }
+
+    public void validateListedDeviceAfterCreate(){
+        Device expectedRequest = testContext.getCreatedDeviceRequest();
+        JsonPath jsonRsp = testContext.getLastDeviceResponse().jsonPath();
+        assertEquals(testContext.getCreatedDeviceId(), jsonRsp.getString("id"));
+        validateDeviceData(expectedRequest, jsonRsp);
+
+    }
+
+    public void validateListedDeviceAfterUpdate(){
+        Device expectedRequest = testContext.getUpdatedDeviceRequest();
+        JsonPath jsonRsp = testContext.getLastDeviceResponse().jsonPath();
+        assertEquals(testContext.getCreatedDeviceId(), jsonRsp.getString("id"));
+        validateDeviceData(expectedRequest, jsonRsp);
+
+    }
+
+    public void validateDeviceList(){
+        Response actualResponse = testContext.getLastDeviceResponse();
+        List<Object> devices = testContext.getLastDeviceResponse().jsonPath().getList("$");
+
+        assertFalse(devices.isEmpty());
+
+        actualResponse.then()
+                .assertThat()
+                .body(matchesJsonSchemaInClasspath("schema/DeviceSchema.json"));
+    }
+
+    public void deviceNotFound(){
+        Response actualResponse = testContext.getLastDeviceResponse();
+        assertEquals(404, actualResponse.getStatusCode());
+        assertTrue(actualResponse.body().asString().contains("not found"));
+    }
+
+    public void validateDeviceData(Device expectedRequest, JsonPath jsonRsp) {
+        assertEquals(expectedRequest.getName(), jsonRsp.getString("name"));
         assertEquals(expectedRequest.getDeviceData().getPrice(), jsonRsp.getDouble("data.price"));
         assertEquals(expectedRequest.getDeviceData().getYear(), jsonRsp.getInt("data.year"));
 
     }
+
+    public void checkTimeStamp(Long time){
+
+        long now = System.currentTimeMillis();
+        long diff = now - time;
+        assertTrue(Duration.ofMillis(diff).toSeconds() < 5);
+    }
+
+
 }

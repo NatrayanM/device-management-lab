@@ -13,15 +13,12 @@ public class DeviceStepDefinitions {
     private DeviceService deviceService;
     private DeviceMapper deviceMapper;
     private DeviceAssertions deviceAssertions;
-    private TestContext testContext;
 
     public DeviceStepDefinitions(DeviceService deviceService,
                                  DeviceMapper deviceMapper,
-                                 TestContext testContext,
                                  DeviceAssertions deviceAssertions){
     this.deviceService =deviceService;
     this.deviceMapper = deviceMapper;
-    this.testContext = testContext;
     this.deviceAssertions = deviceAssertions;
     }
 
@@ -31,9 +28,21 @@ public class DeviceStepDefinitions {
         deviceService.setupDevice(deviceMapper.mapper(dataMap));
     }
 
+    @Given("A device exists with details")
+    public void setupDevice(DataTable data) {
+        Map<String, String> dataMap = data.asMap();
+        deviceService.setupDevice(deviceMapper.mapper(dataMap));
+        deviceService.createDevice();
+    }
+
     @When("I create a device")
     public void createDevice(){
         deviceService.createDevice();
+    }
+
+    @When("I delete the device")
+    public void deleteDevice(){
+        deviceService.deleteDevice();
     }
 
     @Then("The device is created successfully")
@@ -41,4 +50,58 @@ public class DeviceStepDefinitions {
         deviceAssertions.validateStatusCode();;
         deviceAssertions.validateDeviceCreation();
     }
+
+    @Then("The listed device matches the created device")
+    public void validateListedDeviceAfterCreate(){
+        deviceAssertions.validateStatusCode();;
+        deviceAssertions.validateListedDeviceAfterCreate();
+    }
+
+    @Then("The listed device matches the updated device")
+    public void validateListedDevice(){
+        deviceAssertions.validateStatusCode();;
+        deviceAssertions.validateListedDeviceAfterUpdate();
+    }
+
+
+    @When("I list the device by deviceID")
+    public void listDeviceById(){
+        deviceService.getDeviceById();
+    }
+
+    @When("I list all devices")
+    public void listDevice(){
+        deviceService.getDevice();
+    }
+
+    @When("I update the device with new device details")
+    public void updateDeviceDetails(DataTable data){
+        Map<String, String> dataMap = data.asMap();
+        deviceService.updateDevice(deviceMapper.mapper(dataMap));
+        deviceService.updateDevice();
+    }
+
+    @Then("The device updated successfully")
+    public void validateUpdatedDevice(){
+        deviceAssertions.validateStatusCode();;
+        deviceAssertions.validateDeviceUpdate();
+    }
+
+    @Then("The device gets deleted successfully")
+    public void validateDeviceDeletion(){
+        deviceAssertions.validateStatusCode();;
+    }
+
+    @Then("The device is not listed again")
+    public void deviceNotExists(){
+        deviceAssertions.deviceNotFound();
+    }
+
+    @Then("All the devices are listed correctly")
+    public void listAllDevices(){
+        deviceAssertions.validateStatusCode();
+        deviceAssertions.validateDeviceList();
+    }
+
+
 }

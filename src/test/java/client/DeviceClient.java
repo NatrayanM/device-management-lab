@@ -19,6 +19,7 @@ public class DeviceClient {
                 .setBaseUri("https://api.restful-api.dev")
                 .addHeader("Content-Type", "application/json")
                 .addHeader("accept", "application/json")
+                .addHeader("x-api-key", "259cd8ec-fabe-4abf-9749-d24bb12b3840")
                 .build();
     }
 
@@ -43,6 +44,7 @@ public class DeviceClient {
     public Response update(Object body, String path){
         return  given()
                 .spec(reqSpec)
+                .body(body)
                 .when()
                 .put(path);
     }

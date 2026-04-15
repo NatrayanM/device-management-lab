@@ -19,47 +19,69 @@ public class DeviceService {
     }
 
     public void setupDevice(Device device){
-        testContext.setDeviceRequest(device);
+        testContext.setCreatedDeviceRequest(device);
+    }
+
+    public void updateDevice(Device device){
+        testContext.setUpdatedDeviceRequest(device);
     }
 
     public void createDevice(){
-        Response rsp = deviceClient.post(testContext.getDeviceRequest(), DEVICE_ENDPOINT);
+        Response rsp = deviceClient.post(testContext.getCreatedDeviceRequest(), DEVICE_ENDPOINT);
         System.out.println("device is " + rsp.body().asString());
-        testContext.setDeviceResponse(rsp);
-        testContext.setDeviceId(rsp.jsonPath().getString("id"));
+        testContext.setLastDeviceResponse(rsp);
+        testContext.setCreatedDeviceId(rsp.jsonPath().getString("id"));
     }
 
-    public void getDevice(String deviceId){
-        Response rsp = deviceClient.get(DEVICE_ENDPOINT+"/"+deviceId);
+    public void getDeviceById(){
+        Response rsp = deviceClient.get(DEVICE_ENDPOINT+"/"+testContext.getCreatedDeviceId());
+        testContext.setLastDeviceResponse(rsp);
+        System.out.println("device is " + rsp.body().asString());
+    }
+
+    public void getDevice(){
+        Response rsp = deviceClient.get(DEVICE_ENDPOINT);
+        testContext.setLastDeviceResponse(rsp);
         System.out.println("device is " + rsp.body().asString());
     }
 
     public void updateDevice(){
-        Response rsp = deviceClient.update(testContext.getDeviceRequest(), DEVICE_ENDPOINT);
+        Response rsp = deviceClient.update(testContext.getUpdatedDeviceRequest(), DEVICE_ENDPOINT+"/"+testContext.getCreatedDeviceId());
         System.out.println("device is " + rsp.body().asString());
+        testContext.setLastDeviceResponse(rsp);
     }
 
     public void deleteDevice() {
         Response rsp;
-        if (testContext.getDeviceId() != null || !testContext.getDeviceId().isBlank()) {
-            rsp = deviceClient.delete(DEVICE_ENDPOINT + "/" + testContext.getDeviceId());
-            testContext.setDeviceResponse(rsp);
+        if (testContext.getCreatedDeviceId() != null || !testContext.getCreatedDeviceId().isBlank()) {
+            rsp = deviceClient.delete(DEVICE_ENDPOINT + "/" + testContext.getCreatedDeviceId());
+            testContext.setLastDeviceResponse(rsp);
         }
     }
 
         public boolean cleanupDevice(){
             Response rsp = null;
-            if(testContext.getDeviceId()!=null || !testContext.getDeviceId().isBlank()) {
-                rsp = deviceClient.delete(DEVICE_ENDPOINT + "/" + testContext.getDeviceId());
-            }
             try{
-                int rspCode = rsp.getStatusCode();
-                rsp = deviceClient.get(DEVICE_ENDPOINT+"/"+testContext.getDeviceId());
-                System.out.println("code " + rsp.getStatusCode()+ "body " + rsp.body().asString());
-                return rspCode == 200;
+                if(testContext.getCreatedDeviceId()!=null && !testContext.getCreatedDeviceId().isBlank()) {
+                    rsp = deviceClient.delete(DEVICE_ENDPOINT + "/" + testContext.getCreatedDeviceId());
+                }
             } catch (Exception e){
                 return false;
             }
-    }
+
+            try{
+                if(rsp != null) {
+                    int deleteRspCode = rsp.getStatusCode();
+                    rsp = deviceClient.get(DEVICE_ENDPOINT+"/"+testContext.getCreatedDeviceId());
+                    System.out.println("code " + rsp.getStatusCode()+ " body " + rsp.body().asString());
+                    return deleteRspCode == 200;
+                }
+                }catch (Exception e){
+                    return false;
+                }
+            return false;
+        }
+
+
 
 }

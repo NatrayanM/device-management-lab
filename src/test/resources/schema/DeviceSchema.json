@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Device List Schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string"
+      },
+      "data": {
+        "type": ["object", "null"],
+        "additionalProperties": true
+      }
+    },
+    "required": ["id", "name", "data"],
+    "additionalProperties": true
+  }
+}
