@@ -76,12 +76,12 @@ Feature: Device API validation
     Then Request is rejected as bad request
 
   @device @get
-  Scenario: List a device that do not exists
+  Scenario: List a device that does not exist
     When I list the device by deviceID that doesnt exist in the system
     Then No device listed
 
   @device @update
-  Scenario: update a device that do not exists
+  Scenario: update a device that does not exist
     When I update device that doesnt exists in the system with new device details
       | name         | Apple MacBook Pro 17 |
       | year         | 2026                 |
@@ -89,7 +89,7 @@ Feature: Device API validation
     Then No device updated
 
   @device @delete
-  Scenario: Delete an existing device
+  Scenario: Delete a device that does not exist
     When I delete a device that doesnt exists in the system
     Then No device deleted
 
