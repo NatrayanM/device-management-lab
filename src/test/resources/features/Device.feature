@@ -49,6 +49,8 @@ Feature: Device API validation
     And I list the device by deviceID
     And The device is not listed again
 
+  #Observed that GET on /devices returns a default list of devices and not the one's
+  #created. Those device objects had different shapes. So went with schema validation
   @device @get
   Scenario: List all devices
     When I list all devices
