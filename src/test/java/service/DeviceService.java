@@ -117,9 +117,6 @@ public class DeviceService {
         System.out.println(testContext.getCustomRequestPayload().keySet());
     }
 
-    public void prepareEmptyDevicePayload() {
-        testContext.setCustomRequestPayload(null);
-    }
         public boolean cleanupDevice(){
             Response rsp = null;
             try{
