@@ -122,7 +122,7 @@ public class DeviceStepDefinitions {
         deviceAssertions.deviceNotUpdated();
     }
 
-    @Then("All the devices are listed correctly")
+    @Then("All the devices are listed and matches the expected list schema")
     public void listAllDevices(){
         deviceAssertions.validateStatusCode();
         deviceAssertions.validateDeviceList();

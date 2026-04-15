@@ -52,7 +52,7 @@ Feature: Device API validation
   @device @get
   Scenario: List all devices
     When I list all devices
-    Then All the devices are listed correctly
+    Then All the devices are listed and matches the expected list schema
 
   #this test is just to prove that the data object within the Device object is flexible
   # and accepts any valid json structure
