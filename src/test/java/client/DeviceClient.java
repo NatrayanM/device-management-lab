@@ -34,6 +34,14 @@ public class DeviceClient {
                 .post(path);
     }
 
+    public Response post( String path){
+
+        return given()
+                .spec(reqSpec)
+                .when()
+                .post(path);
+    }
+
     public Response get(String path){
         return given()
                 .spec(reqSpec)
