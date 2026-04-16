@@ -30,21 +30,22 @@ mvn clean test '-Dcucumber.filter.tags=@create'
 The following endpoints are covered:
 
 POST /objects → Create a device  
-GET /objects/{id} → Retrieve a device by ID  
-GET /objects → Retrieve all devices  
+GET /objects/{id} → List a device by ID  
+GET /objects → List all devices  
 PUT /objects/{id} → Update a device  
 DELETE /objects/{id} → Delete a device  
 
 Implemented Test Scenarios
 
-Happy Path  
+### Happy Path  
 Create a new device  
-Retrieve a device by ID  
+List a device by ID  
 Update an existing device  
 Delete an existing device  
-Verify deleted device is no longer retrievable  
+Verify deleted device is no longer listed  
 List all devices  
-Additional Functional Coverage  
+
+### Additional Functional Coverage  
 Create a device with flexible/dynamic attributes  
 Edge / Error Scenarios  
 Retrieve a non-existing device  
