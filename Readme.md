@@ -5,10 +5,10 @@
 This project automates functional testing of a Device Management API using a BDD approach.
 The solution validates core CRUD operations (Create, Read, Update, Delete) and focuses on:
 
-Handling multiple API calls within a scenario
-Sharing data between steps
-Validating responses using JSONPath
-Handling error cases and API-specific behavior
+Handling multiple API calls within a scenario  
+Sharing data between steps  
+Validating responses using JSONPath  
+Handling error cases and API-specific behavior  
 
 ## Tech stack
 
