@@ -34,6 +34,7 @@ public class DeviceStepDefinitions {
         Map<String, String> dataMap = data.asMap();
         deviceService.setupDevice(deviceMapper.mapper(dataMap));
         deviceService.createDevice();
+        deviceAssertions.validateStatusCode();
     }
 
     @When("I create a device")
@@ -137,6 +138,11 @@ public class DeviceStepDefinitions {
     @When("I create an empty device")
     public void createEmptyDevice(){
         deviceService.createEmptyDevice();
+    }
+
+    @When("I update device with empty device data")
+    public void updateDeviceWithEmptyDeviceData(){
+        deviceService.updateEmptyDevice();
     }
 
     @Then("Request is rejected as bad request")

@@ -94,6 +94,12 @@ public class DeviceService {
         testContext.setLastDeviceResponse(rsp);
     }
 
+    public void updateEmptyDevice(){
+        Response rsp = deviceClient.update(DEVICE_ENDPOINT + "/" + testContext.getCreatedDeviceId());
+        System.out.println("device is " + rsp.body().asString());
+        testContext.setLastDeviceResponse(rsp);
+    }
+
     public void prepareCustomDevicePayload(Map<String, String> input) {
 
         Map<String, Object> payload = new HashMap<>();

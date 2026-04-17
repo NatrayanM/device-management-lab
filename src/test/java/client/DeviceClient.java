@@ -56,6 +56,13 @@ public class DeviceClient {
                 .put(path);
     }
 
+    public Response update(String path){
+        return  given()
+                .spec(reqSpec)
+                .when()
+                .put(path);
+    }
+
     public Response patch(){
         return given().spec(reqSpec)
                 .when()

@@ -77,6 +77,16 @@ Feature: Device API validation
     When I create an empty device
     Then Request is rejected as bad request
 
+  @device @update
+  Scenario: Update a device with empty device data
+    Given A device exists with details
+      | name         | Apple MacBook Pro 16 |
+      | year         | 2019                 |
+      | price        | 1849.99              |
+    When I update device with empty device data
+    Then Request is rejected as bad request
+
+
   @device @get
   Scenario: List a device that does not exist
     When I list the device by deviceID that doesnt exist in the system
